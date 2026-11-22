@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistem Deteksi Suara Kebocoran</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+<div id="peringatan-prototipe-penelitian"
+     class="peringatan-prototipe"
+     role="alert">
+    <strong>Perhatian: Prototipe Penelitian</strong>
+    <p>
+        Aplikasi ini merupakan prototipe untuk keperluan penelitian
+        deteksi suara menggunakan algoritma Random Forest.
+        Hasil prediksi hanya bersifat informatif dan dapat memiliki
+        kesalahan. Aplikasi ini bukan alat keselamatan, bukan detektor
+        gas profesional, dan tidak boleh digunakan sebagai dasar
+        keputusan keselamatan atau keadaan darurat.
+    </p>
+</div>
+
+
+
+    <header class="header">
+        <div class="container header-content">
+            <div class="brand">
+                <div class="brand-icon">◉</div>
+                <div>
+                    <h2>LeakSound</h2>
+                    <p>Audio Detection System</p>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                Sistem Siap
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <span class="eyebrow">SISTEM MONITORING AUDIO</span>
+
+            <h1>Deteksi Suara<br>
+                <span>Kebocoran Gas atau Pipa</span>
+            </h1>
+
+            <p>
+                Sistem identifikasi kebocoran berdasarkan analisis
+                karakteristik suara menggunakan algoritma Random Forest.
+            </p>
+        </section>
+
+        <section class="dashboard">
+
+            <div class="card recording-card">
+
+                <div class="card-heading">
+                    <div>
+                        <h3>Monitoring Audio</h3>
+                        <p>Rekam suara melalui mikrofon</p>
+                    </div>
+
+                    <span id="micStatus" class="badge">
+                        Mikrofon Mati
+                    </span>
+                </div>
+
+                <div class="wave-container">
+                    <canvas id="waveCanvas"></canvas>
+
+                    <div id="wavePlaceholder">
+                        <div class="wave-icon">〰</div>
+                        <p>Visualisasi audio akan muncul di sini</p>
+                    </div>
+                </div>
+
+                <div class="record-info">
+                    <span id="recordStatus">Menunggu rekaman</span>
+                    <span id="recordTimer">00:00</span>
+                </div>
+
+                <div class="button-group">
+                    <button id="startBtn" class="btn btn-primary">
+                        ● Mulai Merekam
+                    </button>
+
+                    <button id="stopBtn" class="btn btn-danger" disabled>
+                        ■ Berhenti
+                    </button>
+                </div>
+
+                <div id="processStatus" class="process-status">
+                    Sistem siap digunakan.
+                </div>
+
+            </div>
+
+            <div class="card result-card">
+
+                <div class="card-heading">
+                    <div>
+                        <h3>Hasil Deteksi</h3>
+                        <p>Hasil klasifikasi Random Forest</p>
+                    </div>
+
+                    <span class="result-icon">⌕</span>
+                </div>
+
+                <div id="resultDisplay" class="result-display">
+                    <div class="result-symbol">?</div>
+                    <h2>Belum Ada Hasil</h2>
+                    <p>Silakan lakukan perekaman audio.</p>
+                </div>
+
+                <div class="probability-section">
+
+                    <h4>Probabilitas Klasifikasi</h4>
+
+                    <div class="probability-item">
+                        <div class="probability-label">
+                            <span>BOCOR</span>
+                            <strong id="bocorValue">0%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div id="bocorBar" class="progress-fill leak"></div>
+                        </div>
+                    </div>
+
+                    <div class="probability-item">
+                        <div class="probability-label">
+                            <span>NORMAL</span>
+                            <strong id="normalValue">0%</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div id="normalBar" class="progress-fill normal"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="card history-card">
+
+            <div class="card-heading">
+                <div>
+                    <h3>Riwayat Deteksi</h3>
+                    <p>Daftar hasil pemeriksaan audio</p>
+                </div>
+
+                <button id="clearHistoryBtn" class="btn-clear">
+                    Hapus Riwayat
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Waktu</th>
+                            <th>Hasil Prediksi</th>
+                            <th>AC</th>
+                            <th>Desis manusia</th>
+                            <th>Kipas</th>
+                            <th>Ular</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historyBody">
+                        <tr>
+                            <td colspan="7" class="empty-history">
+                                Belum ada riwayat deteksi.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <section class="information">
+
+            <div class="info-card">
+                <span>01</span>
+                <h4>Rekam Audio</h4>
+                <p>Ambil suara menggunakan mikrofon.</p>
+            </div>
+
+            <div class="info-card">
+                <span>02</span>
+                <h4>Ekstraksi Fitur</h4>
+                <p>Analisis audio menggunakan STFT, Mel Spectrogram, dan MFCC.</p>
+            </div>
+
+            <div class="info-card">
+                <span>03</span>
+                <h4>Klasifikasi</h4>
+                <p>Identifikasi suara menggunakan Random Forest.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            Sistem Deteksi Suara Kebocoran Gas atau Pipa
+            &copy; 2026
+        </p>
+        <p>Random Forest Classification</p>
+    </footer>
+
+    <script src="./js/audio-processing.js"></script>
+    <script src="./js/predictor.js"></script>
+    <script src="./js/app.js"></script>
+
+</body>
+</html>
