@@ -1,7 +1,7 @@
 
 // ============================================
 // AUDIO PROCESSING
-// Preprocessing dan ekstraksi 50 fitur audio
+// Preprocessing dan ekstraksi 52 fitur audio
 // ============================================
 
 let parameterAudio = null;
@@ -50,8 +50,8 @@ async function muatKonfigurasiAudio() {
 
     // Validasi jumlah fitur
     if (!Array.isArray(daftarFiturAudio) ||
-        daftarFiturAudio.length !== 50) {
-        throw new Error("Jumlah fitur harus tepat 50.");
+        daftarFiturAudio.length !== 52) {
+        throw new Error("Jumlah fitur harus tepat 52.");
     }
 
     // Validasi referensi ekstraksi
